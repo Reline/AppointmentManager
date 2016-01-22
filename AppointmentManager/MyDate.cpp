@@ -565,7 +565,7 @@ istream & operator>> (istream & is, MyDate & aMyDate)
 
 std::string MyDate::displayDate()
 {
-	char *dayOfWeek = new char[];
+	char *dayOfWeek = new char[9];
 	std::string monthOfYear;
 	std::string dayOfMonth;
 	std::string year;

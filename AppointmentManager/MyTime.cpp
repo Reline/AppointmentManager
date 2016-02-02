@@ -16,9 +16,12 @@ MyTime::MyTime(const MyTime & origMyTime)
  
 // Parameterized (various useful overloads)
     // Hours, Minutes, Seconds, Miliseconds
-MyTime::MyTime(int initHrs, int initMins, int initSecs, int initMilisecs)
+MyTime::MyTime(int initHours, int initMins, int initSecs, int initMilisecs)
 {
-	int hours = initHrs * _ticksPerHour;
+	if (initHours < 0 || initHours > 23 || initMins < 0 || initMins > 59 || initSecs < 0 || initSecs > 59 || initMilisecs < 0 || initMilisecs > 999)
+		throw "Error: Index out of range.";
+
+	int hours = initHours * _ticksPerHour;
 	int minutes = initMins * _ticksPerMinute;
 	int seconds = initSecs * _ticksPerSecond;
 	int milliseconds = initMilisecs;
@@ -26,20 +29,25 @@ MyTime::MyTime(int initHrs, int initMins, int initSecs, int initMilisecs)
 }
 
     // Hours, Minutes, Seconds
-MyTime::MyTime(int initHours, int initMinutes, int initSeconds)
+MyTime::MyTime(int initHours, int initMins, int initSecs)
 {
+	if (initHours < 0 || initHours > 23 || initMins < 0 || initMins > 59 || initSecs < 0 || initSecs > 59)
+		throw "Error: Index out of range.";
+
 	int hours = initHours * _ticksPerHour;
-	int minutes = initMinutes * _ticksPerMinute;
-	int seconds = initSeconds * _ticksPerSecond;
+	int minutes = initMins * _ticksPerMinute;
+	int seconds = initSecs * _ticksPerSecond;
 	_ticks = hours + minutes + seconds;
-	std::cout << "nate sucks" << std::endl;
 }
 
     // Hours, Minutes
-MyTime::MyTime(int initHours, int initMinutes)
+MyTime::MyTime(int initHours, int initMins)
 {
+	if (initHours < 0 || initHours > 23 || initMins < 0 || initMins > 59)
+		throw "Error: Index out of range.";
+
 	int hours = initHours * _ticksPerHour;
-	int minutes = initMinutes * _ticksPerMinute;
+	int minutes = initMins * _ticksPerMinute;
 	_ticks = hours + minutes;
 }
 
@@ -56,7 +64,7 @@ MyTime::~MyTime(){}
  
 // Accessors and mutators for:
 // hours, minutes, seconds, ticks
-int MyTime::GetHours() const\
+int MyTime::GetHours() const
 {
 	int tempTicks = _ticks % _ticksPerDay;
 	int hours = tempTicks / _ticksPerHour;
@@ -65,6 +73,9 @@ int MyTime::GetHours() const\
 
 void MyTime::SetHours(int newHours)
 {
+	if (newHours < 0 || newHours > 23)
+		throw "Error: Index out of range.";
+
 	int hours = GetHours();
 	_ticks -= hours * _ticksPerHour;
 	_ticks += (newHours * _ticksPerHour);
@@ -80,6 +91,9 @@ int MyTime::GetMinutes() const
 
 void MyTime::SetMinutes(int newMinutes)
 {
+	if (newMinutes < 0 || newMinutes > 59)
+		throw "Error: Index out of range.";
+
 	int minutes = GetMinutes();
 	_ticks -= minutes * _ticksPerMinute;
 	_ticks += (newMinutes * _ticksPerMinute);
@@ -96,6 +110,9 @@ int MyTime::GetSeconds() const
 
 void MyTime::SetSeconds(int newSeconds)
 {
+	if (newSeconds < 0 || newSeconds > 59)
+		throw "Error: Index out of range.";
+
 	int seconds = GetSeconds();
 	_ticks -= (seconds * _ticksPerSecond);
 	_ticks += (newSeconds * _ticksPerSecond);
@@ -122,6 +139,9 @@ void MyTime::SetTicks(int newTicks)
     // Hours, Minutes, Seconds, Miliseconds
 void MyTime::SetTime(int newHrs, int newMins, int newSecs, int newMilisecs)
 {
+	if (newHrs < 0 || newHrs > 23 || newMins < 0 || newMins > 59 || newSecs < 0 || newSecs > 59 || newMilisecs < 0 || newMilisecs > 999)
+		throw "Error: Index out of range.";
+
 	int hours = newHrs * _ticksPerHour;
 	int minutes = newMins * _ticksPerMinute;
 	int seconds = newSecs * _ticksPerSecond;
@@ -129,18 +149,24 @@ void MyTime::SetTime(int newHrs, int newMins, int newSecs, int newMilisecs)
 	_ticks = hours + minutes + seconds + milliseconds;
 }
     // Hours, Minutes, Seconds
-void MyTime::SetTime(int newHours, int newMinutes, int newSeconds)
+void MyTime::SetTime(int newHrs, int newMins, int newSecs)
 {
-	int hours = newHours * _ticksPerHour;
-	int minutes = newMinutes * _ticksPerMinute;
-	int seconds = newSeconds * _ticksPerSecond;
+	if (newHrs < 0 || newHrs > 23 || newMins < 0 || newMins > 59 || newSecs < 0 || newSecs > 59)
+		throw "Error: Index out of range.";
+
+	int hours = newHrs * _ticksPerHour;
+	int minutes = newMins * _ticksPerMinute;
+	int seconds = newSecs * _ticksPerSecond;
 	_ticks = hours + minutes + seconds;
 }
     // Hours, Minutes
-void MyTime::SetTime(int newHours, int newMinutes)
+void MyTime::SetTime(int newHrs, int newMins)
 {
-	int hours = newHours * _ticksPerHour;
-	int minutes = newMinutes * _ticksPerMinute;
+	if (newHrs < 0 || newHrs > 23 || newMins < 0 || newMins > 59)
+		throw "Error: Index out of range.";
+
+	int hours = newHrs * _ticksPerHour;
+	int minutes = newMins * _ticksPerMinute;
 	_ticks = hours + minutes;
 }
     // Ticks

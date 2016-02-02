@@ -114,33 +114,15 @@ void loadAppointments(MyArray<Appointment> &AppointmentManager, std::fstream &ap
 	MyDate loadedDate;
 	MyTime loadedTime;
 
-	appointmentFile.open("Appointments.txt", std::ios::app);
-	if (appointmentFile.is_open())
+	std::fstream myfile("Appointments.txt");
+	if (myfile.is_open())
 	{
-		std::cout << "APPOINTMENT FILE IS OPEN, BEGINNING WHILE LOOP" << std::endl; //DEBUG
-		while(!appointmentFile.eof())
-		{
-			std::cout << appointmentFile.eof() << std::endl;
-			appointmentFile >> loadedDescription;
-			std::cout << "Stored " << loadedDescription << " as loadedDescription" << std::endl;
-
-			//appointmentFile >> loadedDate;
-			//std::cout << "Stored -" << loadedDate << "- as loadedDay" << std::endl;
-
-			loadedAppointment.setDesc(loadedDescription);
-			//loadedAppointment.setApptDate(loadedDate.GetDay(), loadedDate.GetMonth(), loadedDate.GetYear());
-			//loadedAppointment.setApptTime(loadedTime.GetMinutes(), loadedTime.GetHours());
-
-			AppointmentManager.Add(loadedAppointment);
-		}
-
-		std::cout << "Printing all apointments I just got from the file" << std::endl;
-		for (int i = 0; i < AppointmentManager.Size(); i++)
-		{
-			std::cout << AppointmentManager[i].getDesc() << std::endl;
-		}
+		// todo: read appointment info into manager
+		
+		myfile.close();
 	}
-	appointmentFile.close();
+	else std::cout << "Unable to open file." << std::endl << std::endl;
+	
 }
 
 
@@ -172,27 +154,24 @@ int main()
 	
 	do
 	{
-		std::cout << "1 ) Add an appointment" << std::endl;
-		std::cout << "2 ) Edit an appointment" << std::endl;
-		std::cout << "3 ) View appointments" << std::endl;
-		std::cout << "4 ) Remove an appointment" << std::endl;
-		std::cout << "5 ) End program and save appointments" << std::endl;
-		//std::cout << "6 ) Clear all SAVED appointments" << std::endl;
+		// load appointments from file
+		loadAppointments(AppointmentManager, appointmentFile);
 
-		// does this program load the appointments automatically or by user option?
-
-		std::cout << "\nWhat operation would you like to perform?" << std::endl;
+		std::cout << " 1) Add an appointment" << std::endl;
+		std::cout << " 2) Edit an appointment" << std::endl;
+		std::cout << " 3) View appointments" << std::endl;
+		std::cout << " 4) Remove an appointment" << std::endl;
+		std::cout << " 5) End program and save appointments" << std::endl;
+		std::cout << "\n What operation would you like to perform? ";
 		std::cin >> userChar;
 
 		switch(userChar)
 		{
 			case '1': // add an appointment
-				//std::cout << "RUNNING OPTION 1" << std::endl; //DEBUG
 				AppointmentManager.Add(newAppointment());
 				std::cout << std::endl;
 				break;
 			case '2': // edit an appointment
-				//std::cout << "RUNNING OPTION 2" << std::endl; //DEBUG
 				if (AppointmentManager.Size() == 0)
 				{
 					std::cout << "Sorry, there are no appointments to edit." << std::endl;
@@ -241,8 +220,6 @@ int main()
 				}
 				break;
 			case '3': // list all appointments between two dates
-				//std::cout << "RUNNING OPTION 3" << std::endl; //DEBUG
-
 				std::cout << "\nEnter the interval to view appointments." << std::endl << std::endl;
 				std::cout << "Start date" << std::endl;
 				startDate = newDate();
@@ -257,7 +234,7 @@ int main()
 							<< AppointmentManager[n].getApptDay() << "/" 
 							<< AppointmentManager[n].getApptYear() << std::endl
 							<< "Time: " << AppointmentManager[n].getApptHour() << ":" 
-							<< AppointmentManager[n].getApptMin() << std::endl;
+							<< AppointmentManager[n].getApptMin() << std::endl; // minutes below 10 show without a zero in front
 					}
 				}
 				std::cout << std::endl;
@@ -282,12 +259,7 @@ int main()
 				}
 
 				break;
-			/*case '6':
-				appointmentFile.clear();
-				break;*/
 			case '5': // save to a disk file
-				//std::cout << "RUNNING OPTION 6" << std::endl; //DEBUG
-
 				saveAppointments(AppointmentManager, appointmentFile);
 
 				/*myfile.open("name.txt");
@@ -300,6 +272,10 @@ int main()
 
 				runProgram = false;
 				break;
+			/*case '6':
+				//std::cout << "RUNNING OPTION 6" << std::endl; //DEBUG
+				appointmentFile.clear();
+				break;*/
 			default: // if the user doesn't enter a correct command...
 				throw "up";
 		}

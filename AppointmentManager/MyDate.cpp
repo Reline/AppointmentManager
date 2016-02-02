@@ -1,5 +1,8 @@
 #include "MyDate.h"
 
+int MyDate::monthLengths[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367 };
+int MyDate::leapLengths[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367 };
+
 // CONSTRUCTORS
 MyDate::MyDate() // default: sets date to jan 1, year 1
 {
@@ -8,7 +11,7 @@ MyDate::MyDate() // default: sets date to jan 1, year 1
 
 MyDate::MyDate(int day, int month, int year)
 {
-	if (day < 0 || month < 0 || year < 0)
+	if (day < 0 || day > 31 || month > 12 || month < 0 || year < 0 || day > monthLengths[GetMonth()])
 		throw "Error: Index out of range.";
 	SetDate(day, month, year);
 }
@@ -53,9 +56,6 @@ int MyDate::GetDay()
 	int month;
 	int days = _days;
 	int daysSubtracted;
-	
-	int monthLengths[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367};
-	int leapLengths[] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367};
 
 	for (year = 1; days > 365; year++)
 		if (IsLeapYear(year))
@@ -266,6 +266,10 @@ void MyDate::SetDate(int newDay, int newMonth, int newYear)
 	SetDay(newDay);
 }
     // MyDate
+void MyDate::SetDate(const MyDate & aMyDate)
+{
+	SetDate(aMyDate.GetDateSerial());
+}
  
 // Now
 // a static function that returns a MyDate object

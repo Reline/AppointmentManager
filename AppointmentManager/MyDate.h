@@ -18,7 +18,7 @@ class MyDate
 private:
       //  0 _days = Jan 1st year 1 CE
       //  a date is stored as a number of days from jan 1st of the year 1
-      int _days;
+	int _days;
  
       // UTILITY FUNCTIONS
  
@@ -28,6 +28,9 @@ public:
       enum DayOfWeek {Mon=0, Tue=1, Wed=2, Thr=3, Fri=4, Sat=5, Sun=6};
       enum MonthOfYear {Jan=1, Feb=2, Mar=3, Apr=4, May=5, Jun=6,
      Jul=7, Aug=8, Sep=9, Oct=10, Nov=11, Dec=12};
+
+	  static int monthLengths[14]; // = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367 };
+	  static int leapLengths[14]; // = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, 367 };
  
       // CONSTRUCTORS
       MyDate(); // default: sets date to jan 1, year 1
